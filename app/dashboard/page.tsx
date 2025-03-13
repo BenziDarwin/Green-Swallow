@@ -16,7 +16,7 @@ import {
   Pie,
   Cell
 } from "recharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -63,8 +63,13 @@ const investmentAllocation = [
 const COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))'];
 
 export default function Dashboard() {
+  const [isMounted, setIsMounted] = useState(false);
   const [balance, setBalance] = useState(5800);
   const [profit, setProfit] = useState(1400);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -82,6 +87,16 @@ export default function Dashboard() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
+
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-background p-6 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Loading dashboard...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6">
